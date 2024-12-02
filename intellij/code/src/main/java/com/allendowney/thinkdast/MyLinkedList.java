@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.allendowney.thinkdast;
 
@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 /**
- * @author downey
  * @param <E>
- *
+ * @author downey
  */
 public class MyLinkedList<E> implements List<E> {
 
@@ -20,7 +20,6 @@ public class MyLinkedList<E> implements List<E> {
 	 * Node is identical to ListNode from the example, but parameterized with T
 	 *
 	 * @author downey
-	 *
 	 */
 	private class Node {
 		public E data;
@@ -30,11 +29,13 @@ public class MyLinkedList<E> implements List<E> {
 			this.data = data;
 			this.next = null;
 		}
+
 		@SuppressWarnings("unused")
 		public Node(E data, Node next) {
 			this.data = data;
 			this.next = next;
 		}
+
 		public String toString() {
 			return "Node(" + data.toString() + ")";
 		}
@@ -73,7 +74,8 @@ public class MyLinkedList<E> implements List<E> {
 		} else {
 			Node node = head;
 			// loop until the last node
-			for ( ; node.next != null; node = node.next) {}
+			for (; node.next != null; node = node.next) {
+			}
 			node.next = new Node(element);
 		}
 		size++;
@@ -82,13 +84,21 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+		if (index == 0) {
+			head = new Node(element, head);
+
+		} else {
+			Node prevNode = getNode(index - 1);
+			prevNode.next = new Node(element, prevNode.next);
+		}
+
+		size++;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends E> collection) {
 		boolean flag = true;
-		for (E element: collection) {
+		for (E element : collection) {
 			flag &= add(element);
 		}
 		return flag;
@@ -112,7 +122,7 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean containsAll(Collection<?> collection) {
-		for (Object obj: collection) {
+		for (Object obj : collection) {
 			if (!contains(obj)) {
 				return false;
 			}
@@ -126,7 +136,9 @@ public class MyLinkedList<E> implements List<E> {
 		return node.data;
 	}
 
-	/** Returns the node at the given index.
+	/**
+	 * Returns the node at the given index.
+	 *
 	 * @param index
 	 * @return
 	 */
@@ -135,7 +147,7 @@ public class MyLinkedList<E> implements List<E> {
 			throw new IndexOutOfBoundsException();
 		}
 		Node node = head;
-		for (int i=0; i<index; i++) {
+		for (int i = 0; i < index; i++) {
 			node = node.next;
 		}
 		return node;
@@ -143,12 +155,26 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
+
+		Node node = head;
+
+		if (size == 0) {
+			return -1;
+		}
+
+		for (int i = 0; i < size; i++) {
+			if (Objects.equals(node.data, target)) {
+				return i;
+			}
+			node = node.next;
+		}
+
 		return -1;
 	}
 
-	/** Checks whether an element of the array is the target.
-	 *
+	/**
+	 * Checks whether an element of the array is the target.
+	 * <p>
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
@@ -177,7 +203,7 @@ public class MyLinkedList<E> implements List<E> {
 	public int lastIndexOf(Object target) {
 		Node node = head;
 		int index = -1;
-		for (int i=0; i<size; i++) {
+		for (int i = 0; i < size; i++) {
 			if (equals(target, node.data)) {
 				index = i;
 			}
@@ -208,14 +234,24 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+		Node node = getNode(index);
+
+		if (node == head) {
+			head = head.next;
+		} else {
+			Node prevNode = getNode(index - 1);
+			prevNode.next = node.next;
+		}
+
+
+		size--;
+		return node.data;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> collection) {
 		boolean flag = true;
-		for (Object obj: collection) {
+		for (Object obj : collection) {
 			flag &= remove(obj);
 		}
 		return flag;
@@ -247,7 +283,7 @@ public class MyLinkedList<E> implements List<E> {
 		// TODO: classify this and improve it.
 		int i = 0;
 		MyLinkedList<E> list = new MyLinkedList<E>();
-		for (Node node=head; node != null; node = node.next) {
+		for (Node node = head; node != null; node = node.next) {
 			if (i >= fromIndex && i <= toIndex) {
 				list.add(node.data);
 			}
@@ -260,7 +296,7 @@ public class MyLinkedList<E> implements List<E> {
 	public Object[] toArray() {
 		Object[] array = new Object[size];
 		int i = 0;
-		for (Node node=head; node != null; node = node.next) {
+		for (Node node = head; node != null; node = node.next) {
 			// System.out.println(node);
 			array[i] = node.data;
 			i++;

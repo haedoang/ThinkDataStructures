@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 /**
  * @author downey
@@ -44,8 +45,16 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		if (size >= array.length) {
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+
+		array[size] = element;
+		size++;
+
+		return true;
 	}
 
 	@Override
@@ -54,7 +63,7 @@ public class MyArrayList<T> implements List<T> {
 			throw new IndexOutOfBoundsException();
 		}
 		// add the element to get the resizing
-		add(element);
+		add(element); //O(1)
 
 		// shift the elements
 		for (int i=size-1; i>index; i--) {
@@ -110,7 +119,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		for (int i = 0; i < size; i++) {
+			Object element = array[i];
+			if (Objects.equals(element, target)) {
+				return i;
+			}
+		}
+
 		return -1;
 	}
 
@@ -181,8 +196,15 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+		T element = get(index);
+
+		for (int i = index; i < size - 1; i++) {
+			array[i] = array[i + 1];
+		}
+
+		size--;
+
+		return element;
 	}
 
 	@Override
@@ -201,8 +223,10 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+
+		T temp = get(index);
+		array[index] = element;
+		return temp;
 	}
 
 	@Override
