@@ -1,11 +1,13 @@
 package com.allendowney.thinkdast;
 
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public class WikiPhilosophy {
 
@@ -40,6 +42,33 @@ public class WikiPhilosophy {
      * @throws IOException
      */
     public static void testConjecture(String destination, String source, int limit) throws IOException {
-        // TODO: FILL THIS IN!
+
+        // 1. 페이지 내 링크 리스트를 가져오자
+        Elements paragraphs = wf.fetchWikipedia(source);
+
+        // 2. process DFS
+        process(paragraphs);
     }
+
+    private static void process(Elements elements) {
+
+        for (Element element : elements) {
+            dfs(element);
+
+        }
+    }
+
+    private static void dfs(Element element) {
+        WikiNodeIterable wikiNodeIterable = new WikiNodeIterable(element);
+
+        for (Node node : wikiNodeIterable) {
+            if (node instanceof TextNode) {
+                System.out.println(node);
+            }
+            else if (node instanceof Element) {
+                dfs((Element) node);
+            }
+        }
+    }
+
 }

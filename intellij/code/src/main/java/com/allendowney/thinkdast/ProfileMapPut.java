@@ -7,14 +7,18 @@ import org.jfree.data.xy.XYSeries;
 
 import com.allendowney.thinkdast.Profiler.Timeable;
 
+import static com.allendowney.thinkdast.ProfileListAdd.separateLine;
+
 public class ProfileMapPut {
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//profileHashMapPut();
-		//profileMyHashMapPut();
+		profileHashMapPut();
+		separateLine();
+		profileMyHashMapPut();
+		separateLine();
 		profileMyFixedHashMapPut();
 	}
 
@@ -26,7 +30,7 @@ public class ProfileMapPut {
 			Map<String, Integer> map;
 
 			public void setup(int n) {
-				map = new HashMap<String, Integer>();
+				map = new HashMap<>();
 			}
 
 			public void timeMe(int n) {

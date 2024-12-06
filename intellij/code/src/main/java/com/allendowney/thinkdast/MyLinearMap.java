@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -63,7 +64,13 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-		// TODO: FILL THIS IN!
+
+		for (Entry entry : entries) {
+			if (Objects.equals(entry.key, target)) {
+				return entry;
+			}
+		}
+
 		return null;
 	}
 
@@ -98,7 +105,13 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-		// TODO: FILL THIS IN!
+
+		for (Entry entry : entries) {
+			if (Objects.equals(entry.key, key)) {
+				return entry.value;
+			}
+		}
+
 		return null;
 	}
 
@@ -118,8 +131,17 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-		// TODO: FILL THIS IN!
-		return null;
+
+		Entry entry = findEntry(key);
+
+		if (entry == null) {
+			entries.add(new Entry(key, value));
+			return null;
+		} else {
+			V oldVal = entry.value;
+			entry.value = value;
+			return oldVal;
+		}
 	}
 
 	@Override
@@ -131,7 +153,14 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		// TODO: FILL THIS IN!
+
+		for (Entry entry : entries) {
+			if (Objects.equals(entry.key, key)) {
+				entries.remove(entry);
+				return entry.value;
+			}
+		}
+
 		return null;
 	}
 

@@ -48,6 +48,8 @@ public class MyLinearMapTest {
 	 */
 	@Test
 	public void testContainsKey() {
+
+		System.out.println("map" +  map);
 		assertThat(map.containsKey("Three"), is(true));
 		assertThat(map.containsKey(null), is(true));
 		assertThat(map.containsKey("Four"), is(false));

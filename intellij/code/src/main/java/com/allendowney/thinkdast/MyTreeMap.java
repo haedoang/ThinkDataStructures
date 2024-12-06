@@ -71,7 +71,19 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 		@SuppressWarnings("unchecked")
 		Comparable<? super K> k = (Comparable<? super K>) target;
 
-		// TODO: FILL THIS IN!
+		Node node = root;
+		while(node != null) {
+			int compare = k.compareTo(node.key);
+
+			if (compare > 0) {
+				node = node.right;
+			} else if (compare < 0) {
+				node = node.left;
+			} else {
+				return node;
+			}
+		}
+
 		return null;
 	}
 

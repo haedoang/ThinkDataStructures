@@ -1,22 +1,21 @@
 package com.allendowney.thinkdast;
 
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-
-import org.jsoup.select.Elements;
 
 /**
  * Encapsulates a map from search term to set of TermCounter.
  *
  * @author downey
- *
  */
 public class Index {
 
-    private Map<String, Set<TermCounter>> index = new HashMap<String, Set<TermCounter>>();
+    private Map<String, Set<TermCounter>> index = new HashMap<>();
 
     /**
      * Adds a TermCounter to the set associated with `term`.
@@ -51,12 +50,12 @@ public class Index {
      */
     public void printIndex() {
         // loop through the search terms
-        for (String term: keySet()) {
+        for (String term : keySet()) {
             System.out.println(term);
 
             // for each term, print the pages where it appears
             Set<TermCounter> tcs = get(term);
-            for (TermCounter tc: tcs) {
+            for (TermCounter tc : tcs) {
                 Integer count = tc.get(term);
                 System.out.println("    " + tc.getLabel() + " " + count);
             }
@@ -75,15 +74,16 @@ public class Index {
     /**
      * Add a page to the index.
      *
-     * @param url         URL of the page.
-     * @param paragraphs  Collection of elements that should be indexed.
+     * @param url        URL of the page.
+     * @param paragraphs Collection of elements that should be indexed.
      */
     public void indexPage(String url, Elements paragraphs) {
-        // TODO: Your code here
+        TermCounter termCounter = new TermCounter(url);
+        termCounter.processElements(paragraphs);
 
-        // make a TermCounter and count the terms in the paragraphs
-
-        // for each term in the TermCounter, add the TermCounter to the index
+        for (String key : termCounter.keySet()) {
+            add(key, termCounter);
+        }
     }
 
     /**
