@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -107,8 +108,25 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	}
 
 	private boolean containsValueHelper(Node node, Object target) {
-		// TODO: FILL THIS IN!
+
+		if (node == null) {
+			return false;
+		}
+
+		if (Objects.equals(node.value, target)) {
+			return true;
+		}
+
+		if (containsValueHelper(node.left, target)) {
+			return true;
+		}
+
+		if (containsValueHelper(node.right, target)) {
+			return true;
+		}
+
 		return false;
+
 	}
 
 	@Override
@@ -133,8 +151,23 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	@Override
 	public Set<K> keySet() {
 		Set<K> set = new LinkedHashSet<K>();
-		// TODO: FILL THIS IN!
+
+		Node node = root;
+
+		inOrder(node, set);
+
 		return set;
+	}
+	private void inOrder(Node node, Set<K> set) {
+		if (node.left != null) {
+			inOrder(node.left, set);
+		}
+
+		set.add(node.key);
+
+		if (node.right != null) {
+			inOrder(node.right, set);
+		}
 	}
 
 	@Override
@@ -151,8 +184,35 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	}
 
 	private V putHelper(Node node, K key, V value) {
-		// TODO: FILL THIS IN!
-		return null;
+
+		@SuppressWarnings("unchecked")
+		Comparable<? super K> k = (Comparable<? super K>) key;
+
+		int compare = k.compareTo(node.key);
+
+		if (compare > 0) {
+			if (node.right == null) {
+				node.right = new Node(key, value);
+				size++;
+				return null;
+			}
+
+			return putHelper(node.right, key, value);
+		}
+
+		if (compare < 0) {
+			if (node.left == null) {
+				node.left = new Node(key, value);
+				size++;
+				return null;
+			}
+
+			return putHelper(node.left, key, value);
+		}
+
+		V oldValue = node.value;
+		node.value = value;
+		return oldValue;
 	}
 
 	@Override
